@@ -99,7 +99,8 @@ void problem1() {
     }
 }
 
-
+// Задание 2. Для квадратной матрицы вычислить произведение элементов побочной диагонали. 
+// Если произведение равно нулю, вывести соответствующее предупреждение.
 void problem2() {
     int n = IntEnterNumber("Введите размер квадратной матрицы: ");
     double A[10][10];
@@ -144,29 +145,31 @@ void problem2() {
     }
 }
  
+// Задание 3. Бухгалтер: каждая строка матрицы – это ежедневные доходы и расходы
+// компании за месяц. Напишите программу, которая выявляет дни с отрицательной суммой и подсчитывает общую прибыль за каждую неделю.
+
 void problem3() {
-    int weeks = 0;
-    cout << "Введите количество недель: ";
-    cin >> weeks;
-    double** A = new double*[weeks];
- 
+    int days = IntEnterNumber("Введите количество дней: ");
+    double** A = new double*[days];
+    for (int i = 0; i < days; i++) {
+        A[i] = new double[2];
+    }
+
     srand(time(0));
  
-    for (int i = 0; i < weeks; i++) {
-        for (int j = 0; j < 7; j++) {
-            A[i][j] = rand() % 10 + (rand() % 100) / 100;
+    for (int i = 0; i < days; i++) {
+        for (int j = 0; j < 2; j++) {
+            A[i][j] = rand() %  2000 - 1000;
         }
     }
  
-    for (int i = 0; i < weeks; i++) {
-        cout << "Неделя " << i << ":\n";
-        for (int j = 0; j < 7; j++) {
-            cout << A[i][j] << "\t";
-        }
+    for (int i = 0; i < days; i++) {
+        cout << "\nДень " << i << ":\n";
+        cout << "Прибыль (в тыс.руб) | Расходы (в тыс.руб)\n";
     }
  
-    for (int i1 = 0; i1 < weeks; i1++) {
-        delete[] A[i1];
+    for (int i = 0; i < days; i++) {
+        delete[] A[i];
     }
     delete[] A;
 }
@@ -174,6 +177,6 @@ void problem3() {
 int main()
 {    
     setlocale(LC_ALL, "Russian");
-    problem1();
+    problem3();
     return 0;
 }
