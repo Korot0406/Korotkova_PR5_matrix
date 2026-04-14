@@ -28,7 +28,7 @@ int IntEnterNumber(string label){
     return stoi(raw_input);
 }
 
-//
+// Функция проверки корректности ввода вещественного числа
 bool DoubleUserInput(string input){
     if(input.empty())return false;
 
@@ -43,7 +43,7 @@ bool DoubleUserInput(string input){
 
 }
 
-//
+// Функция ввода вещественного числа с повторением запроса до корректного ввода
 double DoubleEnterNumber(string label){
     string raw_input;
     cout << label;
@@ -52,21 +52,64 @@ double DoubleEnterNumber(string label){
         cout << label;
         getline(cin, raw_input);
     }
-    return stoi(raw_input);
+    return stod(raw_input);
 }
 
+// Задание 1. Найти минимальный элемент каждого столбца матрицы и заменить его на
+// среднее арифметическое всех элементов этого столбца. Вывести обновлённую матрицу.
+void problem1() {
+    double A[4][5] = {{2.5, -2.0, 3.8, 9.19, 14.14},
+    {12.5, 5.21, 4.2, -10.45, -10.454},
+    {0.89, 8.2, 3.1, 8.9, 0.9},
+    {0.12, -0.13, 1.11, 1.12, 3.4}
+    };
+
+
+    cout << "Исходный массив:\n";
+    for (auto&x : A){
+        for (auto& rows : x){
+            cout << rows << "\t";
+        }
+        cout << "\n";
+    }
+
+    for (int j = 0; j < 5; j++){
+        double min_el = 1000.0;
+        double summa = 0;
+        for (int i = 0; i < 4; i++){
+            summa += A[i][j];
+            if (min_el > A[i][j]){
+                min_el = A[i][j];
+            }
+        } 
+
+        for (int i = 0; i < 4; i++){
+            if (A[i][j] == min_el){
+                A[i][j] = summa/4;
+            }
+        }
+    }
+
+    cout << "Обновленный массив:\n";
+    for (auto&x : A){
+        for (auto& rows : x){
+            cout << rows << "\t";
+        }
+        cout << "\n";
+    }
+}
+
+
 void problem2() {
-    int n;
-    cout << "Введите размер квадратной матрицы: ";
-    cin >> n;
+    int n = IntEnterNumber("Введите размер квадратной матрицы: ");
     double A[10][10];
     int i = 0;
     cout << "Введите массив:\n";
     while (i < n) {
         int j = 0;
         while (j < n) {
-            cout << "A[" << i << "][" << j << "] = ";
-            cin >> *(*(A + i) + j);
+            string label = "A[" + to_string(i) + "][" + to_string(j) + "] = ";
+            *(*(A + i) + j) = DoubleEnterNumber(label);
             j++;
         }
         i++;
@@ -131,6 +174,6 @@ void problem3() {
 int main()
 {    
     setlocale(LC_ALL, "Russian");
-    problem2();
+    problem1();
     return 0;
 }
