@@ -1,8 +1,8 @@
+// Короткова
 #include <iostream>
 #include <string>
 #include <ctime>
 #include <map>
-#include <cmath>
 using namespace std;
 
 // Функция проверки корректности ввода целого числа 
@@ -149,7 +149,6 @@ void problem2() {
  
 // Задание 3. Бухгалтер: каждая строка матрицы – это ежедневные доходы и расходы
 // компании за месяц. Напишите программу, которая выявляет дни с отрицательной суммой и подсчитывает общую прибыль за каждую неделю.
-
 void problem3() {
     int month = IntEnterNumber("Введите номер месяца: ");
     while (month < 1 || month > 12){
@@ -180,8 +179,6 @@ void problem3() {
         days = 30;
     }
 
-    cout << is_leap << "\n" << days << "\n";
-
     int** A = new int*[days];
     for (int i = 0; i < days; i++) {
         A[i] = new int[2];
@@ -202,6 +199,30 @@ void problem3() {
     }
 
     cout << "\n\n";
+
+    int k_negative_sum = 0;
+    int weeks[5] = {0};
+    int copy_days = days;
+
+    for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 7; j++){
+            if (copy_days < 1){
+                break;
+            }
+             weeks[i] += A[j+i*7][0] + A[j+i*7][1];
+             if (A[j+i*7][0] + A[j+i*7][1] < 0){
+                k_negative_sum++;
+             }
+            --copy_days;
+        }
+    }
+
+    cout << "\n";
+    for (int i = 0; i < 5; i++){
+        cout << "Неделя " << to_string(i+1) << ":\nОбщая прибыль: " << weeks[i] << " тыс.руб\n\n";
+    }
+
+    cout << "Количество дней с отрицательной суммой: " << k_negative_sum << "\n";
 
     for (int i = 0; i < days; i++) {
         delete[] A[i];
