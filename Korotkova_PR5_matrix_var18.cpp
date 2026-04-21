@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <map>
+#include <cmath>
 using namespace std;
 
 // Функция проверки корректности ввода целого числа 
@@ -149,34 +151,106 @@ void problem2() {
 // компании за месяц. Напишите программу, которая выявляет дни с отрицательной суммой и подсчитывает общую прибыль за каждую неделю.
 
 void problem3() {
-    int days = IntEnterNumber("Введите количество дней: ");
-    double** A = new double*[days];
+    int month = IntEnterNumber("Введите номер месяца: ");
+    while (month < 1 || month > 12){
+        month = IntEnterNumber("Введите номер месяца: ");
+    }
+
+    int year = IntEnterNumber("Введите год: ");
+    while (year < 1){
+        year = IntEnterNumber("Введите год: ");
+    }
+    
+    bool is_leap = false;
+    if (year % 4 == 0 || (year % 100 == 0 && year % 400 !=0)){
+        is_leap = true;
+    }
+
+    int days = 0;
+
+    if (!is_leap && month == 2){
+        days = 28;
+    }
+    else if (is_leap && month == 2){
+        days = 29;
+    }
+    else if (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12){
+        days = 31;
+    }else{
+        days = 30;
+    }
+
+    cout << is_leap << "\n" << days << "\n";
+
+    int** A = new int*[days];
     for (int i = 0; i < days; i++) {
-        A[i] = new double[2];
+        A[i] = new int[2];
     }
 
     srand(time(0));
- 
+
     for (int i = 0; i < days; i++) {
         for (int j = 0; j < 2; j++) {
             A[i][j] = rand() %  2000 - 1000;
         }
     }
- 
+
     for (int i = 0; i < days; i++) {
-        cout << "\nДень " << i << ":\n";
-        cout << "Прибыль (в тыс.руб) | Расходы (в тыс.руб)\n";
+        cout << "\nДень " << i+1 << ":\n";
+        cout<< "Прибыль (в тыс.руб) | Расходы (в тыс.руб)\n";
+        printf("%12d        | %12d",A[i][0], A[i][1]);
     }
- 
+
+    cout << "\n\n";
+
     for (int i = 0; i < days; i++) {
         delete[] A[i];
     }
     delete[] A;
 }
  
+struct MenuItem{
+    string title;
+    void (*action)();
+};
+
 int main()
 {    
     setlocale(LC_ALL, "Russian");
-    problem3();
+    srand(time(0));
+
+    map<int, MenuItem> menu = {
+        {1, {"Problem 1. Найти минимальный элемент каждого столбца матрицы и заменить его на среднее арифметическое всех элементов этого столбца. Вывести обновлённую матрицу.", problem1}},
+        {2, {"Problem 2. Для квадратной матрицы вычислить произведение элементов побочной диагонали.\nЕсли произведение равно нулю, вывести соответствующее предупреждение.", problem2}},
+        {3, {"Problem 3. Бухгалтер: каждая строка матрицы – это ежедневные доходы и расходы компании за месяц.\nНапишите программу, которая выявляет дни с отрицательной суммой и подсчитывает общую прибыль за каждую неделю.", problem3}}
+    };
+
+    int choice = 0;
+    
+    while(true){
+        cout << "Меню:\n";
+
+        for (const auto& item: menu){
+            cout << "Task " << item.first << ". " << item.second.title << "\n";
+        }
+
+        cout << "0. Выход\n";
+
+        choice = IntEnterNumber("Введите номер пункта: ");
+
+        if (choice == 0){
+            cout << "© 2026 Korotkova I.S.\n";
+            break;
+        }
+
+        cout << "\n";
+
+        if (menu.find(choice) != menu.end()){
+            menu[choice].action();
+        }else{
+            cout << "Некорректный ввод.\n";
+        }
+    }
+
     return 0;
 }
